@@ -180,7 +180,24 @@ const orgs = [
   { name: "Church of the God of Combat", allowedPaths: ["Twilight Giant"] },
   { name: "Church of the God of Knowledge and Wisdom", allowedPaths: ["White Tower"] }
 ];
-
+const origins = [
+  "Loen Kingdom",
+  "Intis Republic",
+  "Feysac Empire",
+  "Feynapotter Kingdom",
+  "Lenburg",
+  "Masin",
+  "Segar",
+  "West Balam",
+  "East Balam",
+  "Highland Kingdom",
+  "Forsaken Land of the Gods",
+  "Waypoint Island",
+  "Hanth Island",
+  "Sonia Island",
+  "Rorsted Archipelago",
+  "Gargas Archipelago"
+];
 const secretOrgs = [
   "Lone Beyonder",
   "Secret Order",
@@ -289,6 +306,8 @@ if (isNoble) {
     nobleFamily = nobleCandidates[Math.floor(Math.random() * nobleCandidates.length)];
     status = `👑 <strong>Status:</strong> Noble of House ${nobleFamily}`;
   }
+  const origin = origins[Math.floor(Math.random() * origins.length)];
+const originLine = `🌍 <strong>Origin:</strong> ${origin}`;
 }
 
   if (isOfficial) {
@@ -333,7 +352,12 @@ const type = allowedSecretOrgs.length === 0
   `<p class="${getSequenceClass(sequenceLabel)}"><strong>Sequence:</strong> ${sequenceLabel} – ${sequence}</p>`,
   `<em class="${getSequenceClass(sequenceLabel)}">${getSequenceMessage(sequenceLabel, path)}</em>`,
   `${affiliation}`,
-  `${status}`,
+`${originLine}`,
+`${status}`,
+  if (nobleFamily) {
+  const honorific = `Then I shall refer to you as ${title} ${name} ${nobleFamily}`;
+  lines.push(`<em>${honorific}</em>`);
+}
   `<img src="images/${path}.jpg" alt="${path} symbol" class="pathway-image" loading="lazy">`
 ];
 
@@ -358,15 +382,6 @@ const type = allowedSecretOrgs.length === 0
     resultContainer.appendChild(element);
     setTimeout(() => element.style.opacity = 1, 50);
   }, index * 1000);
-});
-if (nobleFamily) {
-  const honorific = `Then I shall refer to you as ${title} ${name} ${nobleFamily}`;
-  const line = document.createElement("p");
-  line.innerHTML = `<em>${honorific}</em>`;
-  line.style.opacity = 0;
-  resultContainer.appendChild(line);
-  setTimeout(() => line.style.opacity = 1, 50);
-}
 }
 let canGenerate = true;
 
