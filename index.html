@@ -172,13 +172,13 @@ const descriptions = {
 };
 
 const orgs = [
-  { name: "Church of the Evernight Goddess", taskforce: "Nighthawk", allowedPaths: ["Fool", "Darkness", "Death"] },
+  { name: "Church of the Evernight Goddess", taskforce: ["Nighthawk", "Red Gloves"], allowedPaths: ["Fool", "Darkness", "Death"] },
   { name: "Church of the Lord of Storms", taskforce: "Mandated Punishers", allowedPaths: ["Tyrant"] },
-  { name: "Church of the Eternal Blazing Sun", taskforce: "Inquisition", allowedPaths: ["Sun", "Paragon"] },
-  { name: "Church of the God of Steam and Machinery", taskforce: "Machinery Hivemind", allowedPaths: ["Paragon"] },
-  { name: "Church of Mother Earth", taskforce: "Earth's Blesseds", allowedPaths: ["Moon"] },
-  { name: "Church of the God of Combat", taskforce: "Combat Knights", allowedPaths: ["Twilight Giant"] },
-  { name: "Church of the God of Knowledge and Wisdom", taskforce: "Archivists", allowedPaths: ["White Tower"] }
+  { name: "Church of the Eternal Blazing Sun", taskforce: "Inquisition", allowedPaths: ["Sun"] },
+  { name: "Church of the God of Steam and Machinery", allowedPaths: ["Paragon", "Hermit"] },
+  { name: "Church of Mother Earth", taskforce: "Fertility Order", allowedPaths: ["Mother", "Moon"] },
+  { name: "Church of the God of Combat", allowedPaths: ["Twilight Giant"] },
+  { name: "Church of the God of Knowledge and Wisdom", allowedPaths: ["White Tower"] }
 ];
 
 const secretOrgs = [
@@ -266,13 +266,51 @@ function generateBeyonder() {
   const sequenceLabel = 9 - seqIndex;
 
   const isOfficial = Math.random() < 0.6;
-  let affiliation = "";
+  let affiliation = "";// Status determination
+const isNoble = Math.random() < 0.2; // 20% chance to be Noble
+let status = "🧑‍🌾 <strong>Status:</strong> Commoner";
+let nobleFamily = "";
+
+if (isNoble) {
+  const nobleCandidates = [];
+
+  if (["Red Priest", "Black Emperor"].includes(path)) nobleCandidates.push("Tudor", "Sauron", "Einhorn", "Medici", "Solomon");
+  if (["Door"].includes(path)) nobleCandidates.push("Abraham", "Tamara");
+  if (["Fool"].includes(path)) nobleCandidates.push("Antigonus", "Zaratul");
+  if (["Error"].includes(path)) nobleCandidates.push("Amon", "Jacob", "Zoroast");
+  if (["Justiciar"].includes(path)) nobleCandidates.push("Tamara", "Trunsoest", "Augustus", "Castiya");
+  if (["Black Emperor"].includes(path)) nobleCandidates.push("Trunsoest", "Augustus", "Solomon");
+  if (["Moon"].includes(path)) nobleCandidates.push("Sanguines");
+  if (["Death"].includes(path)) nobleCandidates.push("Eggers");
+  if (["Abyss"].includes(path)) nobleCandidates.push("Nois", "Andariel", "Beria");
+  if (["Demoness"].includes(path)) nobleCandidates.push("Demonness");
+
+  if (nobleCandidates.length > 0) {
+    nobleFamily = nobleCandidates[Math.floor(Math.random() * nobleCandidates.length)];
+    status = `👑 <strong>Status:</strong> Noble of House ${nobleFamily}`;
+  }
+}
 
   if (isOfficial) {
     const allowed = orgs.filter(o => o.allowedPaths.includes(path));
     if (allowed.length > 0) {
       const pick = allowed[Math.floor(Math.random() * allowed.length)];
-      affiliation = `✅ <strong>Official Beyonder</strong><br>🏛️ Organization: ${pick.name}<br>🕵️ Taskforce: ${pick.taskforce}`;
+      let task = "";
+if (Array.isArray(pick.taskforce)) {
+  if (pick.name === "Church of the Evernight Goddess" && sequenceLabel >= 6) {
+    task = pick.taskforce[Math.floor(Math.random() * pick.taskforce.length)];
+  } else {
+    task = pick.taskforce[0]; // default to first if not eligible for Red Gloves
+  }
+} else if (pick.taskforce) {
+  task = pick.taskforce;
+}
+
+if (task) {
+  affiliation = `✅ <strong>Official Beyonder</strong><br>🏛️ Organization: ${pick.name}<br>🕵️ Taskforce: ${task}`;
+} else {
+  affiliation = `✅ <strong>Official Beyonder</strong><br>🏛️ Organization: ${pick.name}`;
+}
     } else {
       affiliation = `❌ <strong>Not Official</strong><br>🤫 Affiliation: Lone Beyonder`;
     }
@@ -295,6 +333,7 @@ const type = allowedSecretOrgs.length === 0
   `<p class="${getSequenceClass(sequenceLabel)}"><strong>Sequence:</strong> ${sequenceLabel} – ${sequence}</p>`,
   `<em class="${getSequenceClass(sequenceLabel)}">${getSequenceMessage(sequenceLabel, path)}</em>`,
   `${affiliation}`,
+  `${status}`,
   `<img src="images/${path}.jpg" alt="${path} symbol" class="pathway-image" loading="lazy">`
 ];
 
@@ -320,6 +359,14 @@ const type = allowedSecretOrgs.length === 0
     setTimeout(() => element.style.opacity = 1, 50);
   }, index * 1000);
 });
+if (nobleFamily) {
+  const honorific = `Then I shall refer to you as ${title} ${name} ${nobleFamily}`;
+  const line = document.createElement("p");
+  line.innerHTML = `<em>${honorific}</em>`;
+  line.style.opacity = 0;
+  resultContainer.appendChild(line);
+  setTimeout(() => line.style.opacity = 1, 50);
+}
 }
 let canGenerate = true;
 
