@@ -1,0 +1,133 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Be a Beyonder</title>
+  <style>
+    body {
+      background: url('https://i.imgur.com/4Z7fp0V.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #e0e0e0;
+      font-family: "Garamond", serif;
+      text-align: center;
+      padding: 40px;
+    }
+    h1 {
+      font-size: 4em;
+      text-shadow: 2px 2px 5px #000;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 1.5em;
+      margin-top: 30px;
+      background-color: #222;
+      color: #fff;
+      border: 2px solid #555;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 40px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 25px;
+      border-radius: 15px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <h1>Be a Beyonder</h1>
+  <button onclick="generateBeyonder()">Generate</button>
+  <div id="result" class="result"></div>  <script>
+    const pathways = {
+      "Seer": ["Seer", "Clown", "Magician", "Faceless", "Marionettist", "Bizarro Sorcerer", "Scholar of Yore", "Miracle Invoker", "Attendant of Mysteries", "Fool"],
+      "Spectator": ["Spectator", "Telepathist", "Psychiatrist", "Hypnotist", "Dreamwalker", "Manipulator", "Dream Weaver", "Discerner", "Author", "Visionary"],
+      "Sleepless": ["Sleepless", "Midnight Poet", "Nightmare", "Soul Assurer", "Spirit Warlock", "Nightwatcher", "Horror Bishop", "Servant of Concealment", "Knight of Misfortune", "Darkness"],
+      "Tyrant": ["Sailor", "Folk of Rage", "Seafarer", "Wind-blessed", "Ocean Songster", "Cataclysmic Interrer", "Sea King", "Calamity", "Thunder God", "Tyrant"],
+      "Door": ["Apprentice", "Trickmaster", "Astrologer", "Scribe", "Traveler", "Secrets Sorcerer", "Wanderer", "Planeswalker", "Key of Stars", "Door"],
+      "Sun": ["Bard", "Light Suppliant", "Solar High Priest", "Notary", "Priest of Light", "Unshadowed", "Justice Mentor", "Lightseeker", "White Angel", "Sun"],
+      "Death": ["Corpse Collector", "Gravedigger", "Spirit Medium", "Spirit Guide", "Gatekeeper", "Undying", "Ferryman", "Death Consul", "Pale Emperor", "Death"],
+      "Hanged Man": ["Secrets Suppliant", "Listener", "Shadow Ascetic", "Rose Bishop", "Shepherd", "Black Knight", "Trinity Templar", "Profane Presbyter", "Dark Angel", "Hanged Man"],
+      "Darkness": ["Sleepless", "Midnight Poet", "Nightmare", "Soul Assurer", "Spirit Warlock", "Nightwatcher", "Horror Bishop", "Servant of Concealment", "Knight of Misfortune", "Darkness"],
+      "Tyrant": ["Sailor", "Folk of Rage", "Seafarer", "Wind-blessed", "Ocean Songster", "Cataclysmic Interrer", "Sea King", "Calamity", "Thunder God", "Tyrant"],
+      "White Tower": ["Reader", "Student of Ratiocination", "Detective", "Polymath", "Mysticism Magister", "Prophet", "Cognizer", "Wisdom Angel", "Omniscient Eye", "White Tower"],
+      "Twilight Giant": ["Warrior", "Pugilist", "Weapon Master", "Dawn Paladin", "Guardian", "Demon Hunter", "Silver Knight", "Glory", "Hand of God", "Twilight Giant"],
+      "Demoness": ["Assassin", "Instigator", "Witch", "Pleasure", "Affliction", "Despair", "Unaging", "Catastrophe", "Apocalypse", "Demoness"],
+      "Red Priest": ["Hunter", "Provoker", "Pyromaniac", "Conspirer", "Reaper", "Iron-blooded Knight", "War Bishop", "Weather Warlock", "Conqueror", "Red Priest"],
+      "Hermit": ["Mystery Pryer", "Melee Scholar", "Warlock", "Scrolls Professor", "Constellations Master", "Mysticologist", "Clairvoyant", "Sage", "Knowledge Emperor", "Hermit"],
+      "Paragon": ["Savant", "Archaeologist", "Appraiser", "Artisan", "Astronomer", "Alchemist", "Arcane Scholar", "Knowledge Magister", "Illuminator", "Paragon"],
+      "Wheel of Fortune": ["Monster", "Robot", "Lucky One", "Calamity Priest", "Winner", "Misfortune Mage", "Chaoswalker", "Soothsayer", "Snake of Mercury", "Wheel of Fortune"],
+      "Mother": ["Planter", "Doctor", "Harvest Priest", "Biologist", "Druid", "Classical Alchemist", "Pallbearer", "Desolate Matriarch", "Naturewalker", "Mother"],
+      "Moon": ["Apothecary", "Beast Tamer", "Vampire", "Potions Professor", "Scarlet Scholar", "Shaman King", "High Summoner", "Life-Giver", "Beauty Goddess", "Moon"],
+      "Abyss": ["Criminal", "Unwinged Angel", "Serial Killer", "Devil", "Desire Apostle", "Demon", "Blatherer", "Bloody Archduke", "Filthy Monarch", "Abyss"],
+      "Chained": ["Prisoner", "Lunatic", "Werewolf", "Zombie", "Wraith", "Puppet", "Disciple of Silence", "Ancient Bane", "Abomination", "Chained"],
+      "Black Emperor": ["Lawyer", "Barbarian", "Briber", "Baron of Corruption", "Mentor of Disorder", "Earl of the Fallen", "Frenzied Mage", "Duke of Entropy", "Prince of Abolition", "Black Emperor"],
+      "Justiciar": ["Arbiter", "Sheriff", "Interrogator", "Judge", "Disciplinary Paladin", "Imperative Mage", "Chaos Hunter", "Balancer", "Hand of Order", "Justiciar"]
+    };
+
+    const orgs = [
+      { name: "Church of the Evernight Goddess", taskforce: "Nighthawk" },
+      { name: "Church of the Lord of Storms", taskforce: "Mandated Punishers" },
+      { name: "Church of the Eternal Blazing Sun", taskforce: "Inquisition" },
+      { name: "Church of the God of Steam and Machinery", taskforce: "Machinery Hivemind" },
+      { name: "Church of Mother Earth", taskforce: "Earth's Blesseds" },
+      { name: "Church of the God of Combat", taskforce: "Combat Knights" },
+      { name: "Church of the God of Knowledge and Wisdom", taskforce: "Archivists" }
+    ];
+
+    const secretOrgs = [
+      "Secret Order", "Rose School of Thought", "Aurora Order", "Twilight Hermit Order",
+      "Moses Ascetic Order", "Demoness Sect", "Life School of Thought", "Iron and Blood Cross Order",
+      "Psychology Alchemists", "Element Dawn"
+    ];
+
+    const sequenceChances = [
+      25, // Seq 9
+      20, // Seq 8
+      15, // Seq 7
+      12, // Seq 6
+      10, // Seq 5
+      7,  // Seq 4
+      5,  // Seq 3
+      3,  // Seq 2
+      2,  // Seq 1
+      1   // Seq 0
+    ];
+
+    function weightedRandom(weights) {
+      let total = weights.reduce((a, b) => a + b, 0);
+      let rand = Math.random() * total;
+      for (let i = 0; i < weights.length; i++) {
+        if (rand < weights[i]) return i;
+        rand -= weights[i];
+      }
+      return weights.length - 1;
+    }
+
+    function generateBeyonder() {
+      const pathwayNames = Object.keys(pathways);
+      const path = pathwayNames[Math.floor(Math.random() * pathwayNames.length)];
+      const seqIndex = weightedRandom(sequenceChances);
+      const sequence = pathways[path][seqIndex];
+
+      const isOfficial = Math.random() < 0.6; // 60% chance to be official
+      let affiliation = "";
+      if (isOfficial) {
+        const pick = orgs[Math.floor(Math.random() * orgs.length)];
+        affiliation = `✅ Official Beyonder<br>
+                      🏛️ Organization: ${pick.name}<br>
+                      🕵️ Taskforce: ${pick.taskforce}`;
+      } else {
+        const type = Math.random() < 0.5 ? "Lone Beyonder" : secretOrgs[Math.floor(Math.random() * secretOrgs.length)];
+        affiliation = `❌ Not Official<br>
+                      🤫 Affiliation: ${type}`;
+      }
+
+      document.getElementById("result").innerHTML = `
+        <h2>🎲 You Rolled:</h2>
+        <p><strong>Pathway:</strong> ${path}</p>
+        <p><strong>Sequence:</strong> ${seqIndex} – ${sequence}</p>
+        <p>${affiliation}</p>
+      `;
+    }
+  </script></body>
+</html>
