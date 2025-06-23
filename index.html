@@ -4,7 +4,7 @@
   <title>Be a Beyonder</title>
   <style>
     body {
-      background: url('https://i.imgur.com/4Z7fp0V.jpg') no-repeat center center fixed;
+      background: url('beyonder_background.jpg') no-repeat center center fixed;
       background-size: cover;
       color: #e0e0e0;
       font-family: "Garamond", serif;
@@ -47,8 +47,6 @@
       "Sun": ["Bard", "Light Suppliant", "Solar High Priest", "Notary", "Priest of Light", "Unshadowed", "Justice Mentor", "Lightseeker", "White Angel", "Sun"],
       "Death": ["Corpse Collector", "Gravedigger", "Spirit Medium", "Spirit Guide", "Gatekeeper", "Undying", "Ferryman", "Death Consul", "Pale Emperor", "Death"],
       "Hanged Man": ["Secrets Suppliant", "Listener", "Shadow Ascetic", "Rose Bishop", "Shepherd", "Black Knight", "Trinity Templar", "Profane Presbyter", "Dark Angel", "Hanged Man"],
-      "Darkness": ["Sleepless", "Midnight Poet", "Nightmare", "Soul Assurer", "Spirit Warlock", "Nightwatcher", "Horror Bishop", "Servant of Concealment", "Knight of Misfortune", "Darkness"],
-      "Tyrant": ["Sailor", "Folk of Rage", "Seafarer", "Wind-blessed", "Ocean Songster", "Cataclysmic Interrer", "Sea King", "Calamity", "Thunder God", "Tyrant"],
       "White Tower": ["Reader", "Student of Ratiocination", "Detective", "Polymath", "Mysticism Magister", "Prophet", "Cognizer", "Wisdom Angel", "Omniscient Eye", "White Tower"],
       "Twilight Giant": ["Warrior", "Pugilist", "Weapon Master", "Dawn Paladin", "Guardian", "Demon Hunter", "Silver Knight", "Glory", "Hand of God", "Twilight Giant"],
       "Demoness": ["Assassin", "Instigator", "Witch", "Pleasure", "Affliction", "Despair", "Unaging", "Catastrophe", "Apocalypse", "Demoness"],
@@ -61,7 +59,8 @@
       "Abyss": ["Criminal", "Unwinged Angel", "Serial Killer", "Devil", "Desire Apostle", "Demon", "Blatherer", "Bloody Archduke", "Filthy Monarch", "Abyss"],
       "Chained": ["Prisoner", "Lunatic", "Werewolf", "Zombie", "Wraith", "Puppet", "Disciple of Silence", "Ancient Bane", "Abomination", "Chained"],
       "Black Emperor": ["Lawyer", "Barbarian", "Briber", "Baron of Corruption", "Mentor of Disorder", "Earl of the Fallen", "Frenzied Mage", "Duke of Entropy", "Prince of Abolition", "Black Emperor"],
-      "Justiciar": ["Arbiter", "Sheriff", "Interrogator", "Judge", "Disciplinary Paladin", "Imperative Mage", "Chaos Hunter", "Balancer", "Hand of Order", "Justiciar"]
+      "Justiciar": ["Arbiter", "Sheriff", "Interrogator", "Judge", "Disciplinary Paladin", "Imperative Mage", "Chaos Hunter", "Balancer", "Hand of Order", "Justiciar"],
+      "Error": ["Marauder", "Swindler", "Cryptologist", "Prometheus", "Dream Stealer", "Parasite", "Mentor of Deceit", "Trojan Horse of Destiny", "Worm of Time", "Error"]
     };
 
     const orgs = [
@@ -107,9 +106,10 @@
       const pathwayNames = Object.keys(pathways);
       const path = pathwayNames[Math.floor(Math.random() * pathwayNames.length)];
       const seqIndex = weightedRandom(sequenceChances);
-      const sequence = pathways[path][seqIndex];
+      const trueIndex = 9 - seqIndex;
+      const sequence = pathways[path][trueIndex];
 
-      const isOfficial = Math.random() < 0.6; // 60% chance to be official
+      const isOfficial = Math.random() < 0.6;
       let affiliation = "";
       if (isOfficial) {
         const pick = orgs[Math.floor(Math.random() * orgs.length)];
