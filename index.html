@@ -57,6 +57,31 @@
     }
     .result p {
       transition: opacity 0.8s ease;
+}
+      .seq-low {
+  color: white;
+  font-family: Garamond, serif;
+}
+
+.seq-mid {
+  color: yellow;
+  font-family: Garamond, serif;
+}
+
+.seq-high {
+  color: lightgreen;
+  font-family: "Georgia", serif;
+}
+
+.seq-angel {
+  color: skyblue;
+  font-family: "Palatino", serif;
+}
+
+.seq-god {
+  color: crimson;
+  font-family: 'UnifrakturCook', cursive;
+}
     }
   </style>
 </head>
@@ -168,7 +193,21 @@ function weightedRandom(weights) {
   }
   return weights.length - 1;
 }
+function getSequenceClass(seqNum) {
+  if (seqNum >= 8) return "seq-low";
+  if (seqNum >= 5) return "seq-mid";
+  if (seqNum >= 3) return "seq-high";
+  if (seqNum >= 1) return "seq-angel";
+  return "seq-god";
+}
 
+function getSequenceMessage(seqNum, path) {
+  if (seqNum >= 8) return `You're a low-sequence beyonder of the ${path} pathway. Never try to seek and pry into the unknown.`;
+  if (seqNum >= 5) return `You're a mid-sequence beyonder of the ${path} pathway. You're leaving the realm of commoners, but not quite close to Godhood.`;
+  if (seqNum >= 3) return `You're turning into a demigod, a saint of the ${path} pathway. With great power comes great difficulty. Don't let the Godhood within you turn rampant.`;
+  if (seqNum >= 1) return `You're turning into an angel of the ${path} pathway. Congratulations, now you're one step closer to your apotheosis — one step closer to be a God.`;
+  return `Honorable Ruler of the ${path} pathway, you're truly the greatest above all. You stood above everything, and above everyone.`;
+}
 function generateBeyonder() {
   const title = document.getElementById("titleSelect").value;
   const name = document.getElementById("nameInput").value || "Anonymous";
@@ -199,13 +238,14 @@ function generateBeyonder() {
   resultContainer.innerHTML = "";
 
   const lines = [
-    `Welcome to the World of Beyonders, ${title} ${name},`,
-    `Your path to destiny is...`,
-    `<strong>Pathway:</strong> ${path}`,
-    `<em>${descriptions[path]}</em>`,
-    `<strong>Sequence:</strong> ${sequenceLabel} – ${sequence}`,
-    `${affiliation}`
-  ];
+  `Welcome to the World of Beyonders, ${title} ${name},`,
+  `Your path to destiny is...`,
+  `<strong>Pathway:</strong> ${path}`,
+  `<em>${descriptions[path]}</em>`,
+  `<p class="${getSequenceClass(sequenceLabel)}"><strong>Sequence:</strong> ${sequenceLabel} – ${sequence}</p>`,
+  `<em class="${getSequenceClass(sequenceLabel)}">${getSequenceMessage(sequenceLabel, path)}</em>`,
+  `${affiliation}`
+];
 
   lines.forEach((line, index) => {
     setTimeout(() => {
