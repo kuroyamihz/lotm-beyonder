@@ -386,7 +386,9 @@ lines.push(`<img src="images/${path}.jpg" alt="${path} symbol" class="pathway-im
     resultContainer.appendChild(element);
     setTimeout(() => element.style.opacity = 1, 50);
   }, index * 1000);
+}); // closes lines.forEach
 }
+
 let canGenerate = true;
 
 function generateWithCooldown() {
@@ -404,7 +406,6 @@ function generateWithCooldown() {
     button.disabled = false;
     button.innerText = "Generate";
   }, 10000); // 10 seconds cooldown
-});
 }
   </script>
 </body>
