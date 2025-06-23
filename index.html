@@ -15,15 +15,25 @@
       font-size: 4em;
       text-shadow: 2px 2px 5px #000;
     }
-    button {
-      padding: 15px 30px;
+    h3 {
+      font-weight: normal;
       font-size: 1.5em;
-      margin: 15px;
+      margin-top: -20px;
+      color: #cccccc;
+    }
+    button, select, input {
+      padding: 10px 20px;
+      font-size: 1em;
+      margin: 10px;
       background-color: #222;
       color: #fff;
       border: 2px solid #555;
       border-radius: 10px;
       cursor: pointer;
+    }
+    input[type="text"] {
+      width: 200px;
+      text-align: center;
     }
     .result {
       margin-top: 40px;
@@ -32,12 +42,33 @@
       border-radius: 15px;
       display: inline-block;
     }
+    @keyframes glitch {
+      0% { text-shadow: 2px 0 red, -2px 0 blue; }
+      20% { text-shadow: -2px 0 red, 2px 0 blue; }
+      40% { text-shadow: 2px 0 red, -2px 0 blue; }
+      60% { text-shadow: -2px 0 red, 2px 0 blue; }
+      80% { text-shadow: 2px 0 red, -2px 0 blue; }
+      100% { text-shadow: none; }
+    }
+    .glitch {
+      animation: glitch 0.5s steps(2, end);
+    }
   </style>
 </head>
 <body>
-  <h1>Be a Beyonder</h1>
-  <button onclick="document.getElementById('bgm').play()">🔊 Enable Sound</button>
-  <button onclick="generateBeyonder()">Generate</button>
+  <h1 id="glitchTitle">Be a Beyonder</h1>
+  <h3>
+    To seek the divine is to gamble your very soul. Will you tread the path of no return?
+  </h3>  <div>
+    <input type="text" id="nameInput" placeholder="Insert name">
+    <select id="titleSelect">
+      <option>Mr.</option>
+      <option>Miss</option>
+      <option>Mrs.</option>
+      <option>Ma'am</option>
+    </select>
+  </div><button onclick="document.getElementById('bgm').play()">🔊 Enable Sound</button> <button onclick="generateBeyonder()">Generate</button>
+
   <div id="result" class="result"></div>  <audio id="bgm" loop hidden>
     <source src="beyonder.mp3" type="audio/mpeg">
   </audio>  <script>
@@ -116,12 +147,23 @@
                       🤫 Affiliation: ${type}`;
       }
 
+      const title = document.getElementById("titleSelect").value;
+      const name = document.getElementById("nameInput").value || "Wanderer";
+
       document.getElementById("result").innerHTML = `
-        <h2>🎲 You Rolled:</h2>
+        <h2>Welcome to the World of Beyonders, ${title} ${name},</h2>
+        <p>Your path to destiny is...</p>
         <p><strong>Pathway:</strong> ${path}</p>
         <p><strong>Sequence:</strong> ${seqIndex} – ${sequence}</p>
         <p>${affiliation}</p>
       `;
     }
+
+    // Glitch effect on header
+    setInterval(() => {
+      const title = document.getElementById('glitchTitle');
+      title.classList.add('glitch');
+      setTimeout(() => title.classList.remove('glitch'), 500);
+    }, 8000);
   </script></body>
 </html>
