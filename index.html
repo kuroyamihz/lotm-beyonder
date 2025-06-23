@@ -309,7 +309,6 @@ if (isNoble) {
   }
   const origin = origins[Math.floor(Math.random() * origins.length)];
 const originLine = `🌍 <strong>Origin:</strong> ${origin}`;
-}
 
   if (isOfficial) {
     const allowed = orgs.filter(o => o.allowedPaths.includes(path));
@@ -353,14 +352,18 @@ const type = allowedSecretOrgs.length === 0
   `<p class="${getSequenceClass(sequenceLabel)}"><strong>Sequence:</strong> ${sequenceLabel} – ${sequence}</p>`,
   `<em class="${getSequenceClass(sequenceLabel)}">${getSequenceMessage(sequenceLabel, path)}</em>`,
   `${affiliation}`,
-`${originLine}`,
-`${status}`,
-  if (nobleFamily) {
+  `${originLine}`,
+  `${status}`
+];
+
+// Add noble honorific only if applicable
+if (nobleFamily) {
   const honorific = `Then I shall refer to you as ${title} ${name} ${nobleFamily}`;
   lines.push(`<em>${honorific}</em>`);
 }
-  `<img src="images/${path}.jpg" alt="${path} symbol" class="pathway-image" loading="lazy">`
-];
+
+// Add the pathway image last
+lines.push(`<img src="images/${path}.jpg" alt="${path} symbol" class="pathway-image" loading="lazy">`);
 
   lines.forEach((line, index) => {
   setTimeout(() => {
