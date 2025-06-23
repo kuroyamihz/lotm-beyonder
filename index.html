@@ -41,7 +41,6 @@
       padding: 25px;
       border-radius: 15px;
       display: inline-block;
-      min-height: 150px;
     }
     .subheader {
       font-style: italic;
@@ -55,6 +54,9 @@
       margin: 5px;
       border-radius: 5px;
       border: 1px solid #444;
+    }
+    .result p {
+      transition: opacity 0.8s ease;
     }
   </style>
 </head>
@@ -127,7 +129,9 @@ const secretOrgs = [
   "Psychology Alchemists", "Element Dawn"
 ];
 
-const sequenceChances = [25, 20, 15, 12, 10, 7, 5, 3, 2, 1];
+const sequenceChances = [
+  25, 20, 15, 12, 10, 7, 5, 3, 2, 1
+];
 
 function weightedRandom(weights) {
   let total = weights.reduce((a, b) => a + b, 0);
@@ -139,27 +143,16 @@ function weightedRandom(weights) {
   return weights.length - 1;
 }
 
-function revealTextSlowly(text, element) {
-  element.innerHTML = '';
-  let i = 0;
-  function type() {
-    if (i < text.length) {
-      element.innerHTML += text.charAt(i);
-      i++;
-      setTimeout(type, 30);
-    }
-  }
-  type();
-}
-
 function generateBeyonder() {
   const title = document.getElementById("titleSelect").value;
   const name = document.getElementById("nameInput").value || "Anonymous";
+
   const pathwayNames = Object.keys(pathways);
   const path = pathwayNames[Math.floor(Math.random() * pathwayNames.length)];
   const seqIndex = weightedRandom(sequenceChances);
   const sequence = pathways[path][seqIndex];
   const sequenceLabel = 9 - seqIndex;
+
   const isOfficial = Math.random() < 0.6;
   let affiliation = "";
 
@@ -176,9 +169,26 @@ function generateBeyonder() {
     affiliation = `❌ <strong>Not Official</strong><br>🤫 Affiliation: ${type}`;
   }
 
-  const fullText = `Welcome to the World of Beyonders, ${title} ${name},\n\nYour path to destiny is...\n\nPathway: ${path}\nSequence: ${sequenceLabel} – ${sequence}\n\n${affiliation.replace(/<br>/g, '\n')}`;
-  const resultDiv = document.getElementById("result");
-  revealTextSlowly(fullText, resultDiv);
+  const resultContainer = document.getElementById("result");
+  resultContainer.innerHTML = "";
+
+  const lines = [
+    `Welcome to the World of Beyonders, ${title} ${name},`,
+    `Your path to destiny is...`,
+    `<strong>Pathway:</strong> ${path}`,
+    `<strong>Sequence:</strong> ${sequenceLabel} – ${sequence}`,
+    `${affiliation}`
+  ];
+
+  lines.forEach((line, index) => {
+    setTimeout(() => {
+      const p = document.createElement("p");
+      p.innerHTML = line;
+      p.style.opacity = 0;
+      resultContainer.appendChild(p);
+      setTimeout(() => p.style.opacity = 1, 50);
+    }, index * 1000);
+  });
 }
 
   </script>
