@@ -108,7 +108,7 @@
   </div>
   <div>
     <button onclick="document.getElementById('bgsound').play()">🔊 Enable Sound</button>
-    <button onclick="generateBeyonder()">Generate</button>
+    <button onclick="generateWithCooldown()">Generate</button>
   </div>
   <div id="result" class="result"></div>
   <audio id="bgsound" loop>
@@ -278,7 +278,24 @@ function generateBeyonder() {
   }, index * 1000);
 });
 }
+let canGenerate = true;
 
+function generateWithCooldown() {
+  if (!canGenerate) return;
+
+  canGenerate = false;
+  generateBeyonder();
+
+  const button = document.querySelector("button[onclick='generateWithCooldown()']");
+  button.disabled = true;
+  button.innerText = "Cooldown...";
+
+  setTimeout(() => {
+    canGenerate = true;
+    button.disabled = false;
+    button.innerText = "Generate";
+  }, 10000); // 10 seconds cooldown
+}
   </script>
 </body>
 </html>
