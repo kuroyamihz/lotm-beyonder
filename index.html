@@ -37,7 +37,10 @@
 <body>
   <h1>Be a Beyonder</h1>
   <button onclick="generateBeyonder()">Generate</button>
-  <div id="result" class="result"></div>  <script>
+  <div id="result" class="result"></div>  <audio autoplay loop hidden>
+    <source src="beyonder.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>  <script>
     const pathways = {
       "Seer": ["Seer", "Clown", "Magician", "Faceless", "Marionettist", "Bizarro Sorcerer", "Scholar of Yore", "Miracle Invoker", "Attendant of Mysteries", "Fool"],
       "Spectator": ["Spectator", "Telepathist", "Psychiatrist", "Hypnotist", "Dreamwalker", "Manipulator", "Dream Weaver", "Discerner", "Author", "Visionary"],
