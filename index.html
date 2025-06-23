@@ -113,6 +113,31 @@
   "Error": ["Marauder", "Swindler", "Cryptologist", "Prometheus", "Dream Stealer", "Parasite", "Mentor of Deceit", "Trojan Horse of Destiny", "Worm of Time", "Error"]
 };
 
+    };  const descriptions = {  
+"Fool": "A path of illusions, paradoxes, and the divine masquerade.",  
+"Visionary": "To observe is to control — see, feel, and shape the unseen.",  
+"Darkness": "Resist the pull of slumber; embrace the abyss of waking horror.",  
+"Tyrant": "Storm, sea, and rage — power is seized through sheer force.",  
+"Door": "Step between realms. Travel beyond what should be known.",  
+"Sun": "The light purifies, but it also blinds. Radiance is judgment.",  
+"Death": "Master of spirits and silence — you rule what others fear.",  
+"Hanged Man": "Truth lies in shadows. Sacrifice brings revelation.",  
+"White Tower": "Reason is your weapon. With intellect, even fate is dissected.",  
+"Twilight Giant": "Bravery and strength forged at the edge of myth and dusk.",  
+"Demoness": "Seduction, manipulation, and a beauty that corrupts.",  
+"Red Priest": "War and flame feed the faithful. Burn and convert.",  
+"Hermit": "Seek forbidden truths, walk the lonely road of wisdom.",  
+"Paragon": "Curiosity refined — mastery in craft, art, and mind.",  
+"Wheel of Fortune": "Chance, chaos, and destiny collide at your whim.",  
+"Mother": "Life grows from rot and soil alike. Nurture or consume.",  
+"Moon": "Beasts, blood, and transformation. What lies beneath?",  
+"Abyss": "Desire unchained. You are what crawls from the void.",  
+"Chained": "Madness shackled is still madness. Break, or be broken.",  
+"Black Emperor": "Rule through order, law, and veiled dominion.",  
+"Justiciar": "Balance above all. Judgment must fall clean and cold.",  
+"Error": "Glitches in reality. You should not exist — and yet do."  
+};
+
 const orgs = [
   { name: "Church of the Evernight Goddess", taskforce: "Nighthawk", allowedPaths: ["Fool", "Darkness", "Death"] },
   { name: "Church of the Lord of Storms", taskforce: "Mandated Punishers", allowedPaths: ["Tyrant"] },
@@ -176,6 +201,7 @@ function generateBeyonder() {
     `Welcome to the World of Beyonders, ${title} ${name},`,
     `Your path to destiny is...`,
     `<strong>Pathway:</strong> ${path}`,
+    `<em>${descriptions[path]}</em>`,
     `<strong>Sequence:</strong> ${sequenceLabel} – ${sequence}`,
     `${affiliation}`
   ];
