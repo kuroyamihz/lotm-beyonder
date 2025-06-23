@@ -182,9 +182,24 @@ const orgs = [
 ];
 
 const secretOrgs = [
-  "Secret Order", "Rose School of Thought", "Aurora Order", "Twilight Hermit Order",
-  "Moses Ascetic Order", "Demoness Sect", "Life School of Thought", "Iron and Blood Cross Order",
-  "Psychology Alchemists", "Element Dawn"
+  "Lone Beyonder",
+  "Secret Order",
+  "Rose School of Thought",
+  "Aurora Order",
+  "Twilight Hermit Order",
+  "Moses Ascetic Order",
+  "Demoness Sect",
+  "Life School of Thought",
+  "Iron and Blood Cross Order",
+  "Psychology Alchemists",
+  "Element Dawn",
+  "Rose Redemption",
+  "Mirror People",
+  "Blood Sanctify Sect",
+  "Theosophy Order",
+  "Numinous Episcopate",
+  "Hermits of Fate",
+  "Naturism Sect"
 ];
 
 const sequenceChances = [
@@ -215,6 +230,31 @@ function getSequenceMessage(seqNum, path) {
   if (seqNum >= 1) return `You're turning into an angel of the ${path} pathway. Congratulations, now you're one step closer to your apotheosis — one step closer to be a God.`;
   return `Honorable Ruler of the ${path} pathway, you're truly the greatest above all. You stood above everything, and above everyone.`;
 }
+function getAllowedSecretOrgs(path, sequenceLabel) {
+  const orgs = [];
+
+  if (path === "Fool") orgs.push("Secret Order");
+  if (path === "Hermit") {
+    orgs.push("Moses Ascetic Order", "Element Dawn");
+  }
+  if (path === "Demoness") {
+    orgs.push("Demoness Sect");
+    if (sequenceLabel >= 8) orgs.push("Theosophy Order");
+  }
+  if (path === "Abyss") orgs.push("Blood Sanctify Sect");
+  if (path === "Door" && sequenceLabel >= 8) orgs.push("Theosophy Order");
+  if (path === "Death") orgs.push("Numinous Episcopate");
+  if (path === "Moon" || path === "Wheel of Fortune") orgs.push("Life School of Thought");
+  if (path === "Moon" || path === "Chained") orgs.push("Rose School of Thought");
+  if (path === "Hanged Man") orgs.push("Aurora Order");
+  if (path === "Door" && sequenceLabel >= 4) orgs.push("Aurora Order");
+  if (path === "Red Priest") orgs.push("Iron and Blood Cross Order");
+  if (path === "Visionary") orgs.push("Psychology Alchemists");
+  if (path === "Error") orgs.push("Hermits of Fate");
+  if (path === "Chained") orgs.push("Naturism Sect");
+
+  return orgs;
+}
 function generateBeyonder() {
   const title = document.getElementById("titleSelect").value;
   const name = document.getElementById("nameInput").value || "Anonymous";
@@ -237,7 +277,10 @@ function generateBeyonder() {
       affiliation = `❌ <strong>Not Official</strong><br>🤫 Affiliation: Lone Beyonder`;
     }
   } else {
-    const type = Math.random() < 0.5 ? "Lone Beyonder" : secretOrgs[Math.floor(Math.random() * secretOrgs.length)];
+    const allowedSecretOrgs = getAllowedSecretOrgs(path, sequenceLabel);
+const type = allowedSecretOrgs.length === 0
+  ? "Lone Beyonder"
+  : allowedSecretOrgs[Math.floor(Math.random() * allowedSecretOrgs.length)];
     affiliation = `❌ <strong>Not Official</strong><br>🤫 Affiliation: ${type}`;
   }
 
