@@ -42,6 +42,13 @@
       border-radius: 15px;
       display: inline-block;
     }
+    .pathway-image {
+  margin-top: 20px;
+  max-width: 400px;
+  width: 80%;
+  opacity: 0;
+  transition: opacity 1s ease;
+    }
     .subheader {
       font-style: italic;
       font-size: 1.2em;
@@ -244,18 +251,32 @@ function generateBeyonder() {
   `<em>${descriptions[path]}</em>`,
   `<p class="${getSequenceClass(sequenceLabel)}"><strong>Sequence:</strong> ${sequenceLabel} – ${sequence}</p>`,
   `<em class="${getSequenceClass(sequenceLabel)}">${getSequenceMessage(sequenceLabel, path)}</em>`,
-  `${affiliation}`
+  `${affiliation}`,
+  `<img src="${path}.jpg" alt="${path} symbol" class="pathway-image" loading="lazy">`
 ];
 
   lines.forEach((line, index) => {
-    setTimeout(() => {
-      const p = document.createElement("p");
-      p.innerHTML = line;
-      p.style.opacity = 0;
-      resultContainer.appendChild(p);
-      setTimeout(() => p.style.opacity = 1, 50);
-    }, index * 1000);
-  });
+  setTimeout(() => {
+    const isImage = line.includes('<img');
+    const element = isImage ? document.createElement("img") : document.createElement("p");
+
+    if (isImage) {
+      // Create temporary container to parse attributes
+      const temp = document.createElement("div");
+      temp.innerHTML = line;
+      const img = temp.querySelector("img");
+      element.src = img.src;
+      element.alt = img.alt;
+      element.className = img.className;
+    } else {
+      element.innerHTML = line;
+    }
+
+    element.style.opacity = 0;
+    resultContainer.appendChild(element);
+    setTimeout(() => element.style.opacity = 1, 50);
+  }, index * 1000);
+});
 }
 
   </script>
