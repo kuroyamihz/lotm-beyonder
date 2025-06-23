@@ -18,7 +18,7 @@
     button {
       padding: 15px 30px;
       font-size: 1.5em;
-      margin-top: 30px;
+      margin: 15px;
       background-color: #222;
       color: #fff;
       border: 2px solid #555;
@@ -36,15 +36,15 @@
 </head>
 <body>
   <h1>Be a Beyonder</h1>
+  <button onclick="document.getElementById('bgm').play()">🔊 Enable Sound</button>
   <button onclick="generateBeyonder()">Generate</button>
-  <div id="result" class="result"></div>  <audio autoplay loop hidden>
+  <div id="result" class="result"></div>  <audio id="bgm" loop hidden>
     <source src="beyonder.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
   </audio>  <script>
     const pathways = {
-      "Seer": ["Seer", "Clown", "Magician", "Faceless", "Marionettist", "Bizarro Sorcerer", "Scholar of Yore", "Miracle Invoker", "Attendant of Mysteries", "Fool"],
-      "Spectator": ["Spectator", "Telepathist", "Psychiatrist", "Hypnotist", "Dreamwalker", "Manipulator", "Dream Weaver", "Discerner", "Author", "Visionary"],
-      "Sleepless": ["Sleepless", "Midnight Poet", "Nightmare", "Soul Assurer", "Spirit Warlock", "Nightwatcher", "Horror Bishop", "Servant of Concealment", "Knight of Misfortune", "Darkness"],
+      "Fool": ["Seer", "Clown", "Magician", "Faceless", "Marionettist", "Bizarro Sorcerer", "Scholar of Yore", "Miracle Invoker", "Attendant of Mysteries", "Fool"],
+      "Visionary": ["Spectator", "Telepathist", "Psychiatrist", "Hypnotist", "Dreamwalker", "Manipulator", "Dream Weaver", "Discerner", "Author", "Visionary"],
+      "Darkness": ["Sleepless", "Midnight Poet", "Nightmare", "Soul Assurer", "Spirit Warlock", "Nightwatcher", "Horror Bishop", "Servant of Concealment", "Knight of Misfortune", "Darkness"],
       "Tyrant": ["Sailor", "Folk of Rage", "Seafarer", "Wind-blessed", "Ocean Songster", "Cataclysmic Interrer", "Sea King", "Calamity", "Thunder God", "Tyrant"],
       "Door": ["Apprentice", "Trickmaster", "Astrologer", "Scribe", "Traveler", "Secrets Sorcerer", "Wanderer", "Planeswalker", "Key of Stars", "Door"],
       "Sun": ["Bard", "Light Suppliant", "Solar High Priest", "Notary", "Priest of Light", "Unshadowed", "Justice Mentor", "Lightseeker", "White Angel", "Sun"],
@@ -66,15 +66,17 @@
       "Error": ["Marauder", "Swindler", "Cryptologist", "Prometheus", "Dream Stealer", "Parasite", "Mentor of Deceit", "Trojan Horse of Destiny", "Worm of Time", "Error"]
     };
 
-    const orgs = [
-      { name: "Church of the Evernight Goddess", taskforce: "Nighthawk" },
-      { name: "Church of the Lord of Storms", taskforce: "Mandated Punishers" },
-      { name: "Church of the Eternal Blazing Sun", taskforce: "Inquisition" },
-      { name: "Church of the God of Steam and Machinery", taskforce: "Machinery Hivemind" },
-      { name: "Church of Mother Earth", taskforce: "Earth's Blesseds" },
-      { name: "Church of the God of Combat", taskforce: "Combat Knights" },
-      { name: "Church of the God of Knowledge and Wisdom", taskforce: "Archivists" }
-    ];
+    const orgRules = {
+      "Fool": { name: "Church of the Evernight Goddess", taskforce: "Nighthawk" },
+      "Darkness": { name: "Church of the Evernight Goddess", taskforce: "Nighthawk" },
+      "Death": { name: "Church of the Evernight Goddess", taskforce: "Nighthawk" },
+      "Sun": { name: "Church of the Eternal Blazing Sun", taskforce: "Inquisition" },
+      "Paragon": { name: "Church of the Eternal Blazing Sun", taskforce: "Inquisition" },
+      "Tyrant": { name: "Church of the Lord of Storms", taskforce: "Mandated Punishers" },
+      "White Tower": { name: "Church of the God of Knowledge and Wisdom", taskforce: "Archivists" },
+      "Twilight Giant": { name: "Church of the God of Combat", taskforce: "Combat Knights" },
+      "Moon": { name: "Church of Mother Earth", taskforce: "Earth's Blesseds" }
+    };
 
     const secretOrgs = [
       "Secret Order", "Rose School of Thought", "Aurora Order", "Twilight Hermit Order",
@@ -82,18 +84,7 @@
       "Psychology Alchemists", "Element Dawn"
     ];
 
-    const sequenceChances = [
-      25, // Seq 9
-      20, // Seq 8
-      15, // Seq 7
-      12, // Seq 6
-      10, // Seq 5
-      7,  // Seq 4
-      5,  // Seq 3
-      3,  // Seq 2
-      2,  // Seq 1
-      1   // Seq 0
-    ];
+    const sequenceChances = [25, 20, 15, 12, 10, 7, 5, 3, 2, 1];
 
     function weightedRandom(weights) {
       let total = weights.reduce((a, b) => a + b, 0);
@@ -114,11 +105,11 @@
 
       const isOfficial = Math.random() < 0.6;
       let affiliation = "";
-      if (isOfficial) {
-        const pick = orgs[Math.floor(Math.random() * orgs.length)];
+      if (isOfficial && orgRules[path]) {
+        const org = orgRules[path];
         affiliation = `✅ Official Beyonder<br>
-                      🏛️ Organization: ${pick.name}<br>
-                      🕵️ Taskforce: ${pick.taskforce}`;
+                      🏛️ Organization: ${org.name}<br>
+                      🕵️ Taskforce: ${org.taskforce}`;
       } else {
         const type = Math.random() < 0.5 ? "Lone Beyonder" : secretOrgs[Math.floor(Math.random() * secretOrgs.length)];
         affiliation = `❌ Not Official<br>
